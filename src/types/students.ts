@@ -1,13 +1,14 @@
 export type StudentStatus = "Active" | "Graduated" | "Inactive" | "On Leave";
 
 export interface Student {
-  id: string;
+  id: number;
   name: string;
   age: number;
   registration: string;
   gpa: number;
   course: string;
   status: StudentStatus;
-  creditProgress: number;
+  progress: number;
   photoUrl: string;
+  disciplines: [string];
 }

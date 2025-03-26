@@ -52,7 +52,7 @@ const SubjectTable: FC<SubjectTableProps> = ({ subjects }) => {
             {subjects.map((subject, index) => (
               <TableRow key={index}>
                 <TableCell>{subject.code}</TableCell>
-                <TableCell>{subject.title}</TableCell>
+                <TableCell>{subject.name}</TableCell>
                 <TableCell>{subject.department}</TableCell>
                 <TableCell>{subject.credits}</TableCell>
               </TableRow>

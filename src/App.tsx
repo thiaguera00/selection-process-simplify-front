@@ -1,72 +1,86 @@
-import { useState } from "react";
-import { Box, Container, Grid } from "@mui/material";
-import SubjectTable from "./components/TableDataStudants";
-import StudentCard from "./components/StudantCard";
+import { useEffect, useState } from "react";
+import { Container, Grid, Typography } from "@mui/material";
+import SubjectTable from "./components/TableDisciplines";
+import StudentCard from "./components/StudentCard";
 import { Subject } from "./types/subject";
-import { Student } from "./types/students" 
-
-// Dados mockados
-const mockSubjects: Subject[] = [
-  { code: "BUS310", title: "Principles of Marketing", department: "Business", credits: 3 },
-  { code: "CHEM301", title: "Organic Chemistry", department: "Chemistry", credits: 3 },
-  { code: "CHEM301", title: "Introduction to Biology", department: "Biology", credits: 4 },
-  { code: "CHEM301", title: "Introduction to Programming", department: "Computer Science", credits: 3 },
-  { code: "CHEM301", title: "Art History", department: "Fine Arts", credits: 2 },
-  { code: "CHEM301", title: "Principles of Microeconomics", department: "Economics", credits: 3 },
-  { code: "CHEM301", title: "Classical Mechanics", department: "Physics", credits: 4 },
-  { code: "CHEM301", title: "Probability and Statistics", department: "Statistics", credits: 3 },
-  { code: "CHEM301", title: "Introduction to Ethics", department: "Philosophy", credits: 3 },
-  { code: "CHEM301", title: "Literary Analysis", department: "English", credits: 2 },
-];
-
-const mockStudents: Student[] = [
-  {
-    id: "1",
-    name: "Sarah Johnson",
-    age: 21,
-    registration: "20231234",
-    gpa: 3.8,
-    course: "Biotechnology and bioinformatics",
-    status: "Active",
-    creditProgress: 78,
-    photoUrl: "https://randomuser.me/api/portraits/women/65.jpg",
-  },
-  {
-    id: "2",
-    name: "Lucas Silva",
-    age: 22,
-    registration: "20231235",
-    gpa: 3.5,
-    course: "Computer Engineering",
-    status: "On Leave",
-    creditProgress: 56,
-    photoUrl: "https://randomuser.me/api/portraits/men/75.jpg",
-  },
-];
+import { Student } from "./types/students";
+import { getAllDisciplines } from "./services/disciplineService";
+import { getAllStudents, createStudent, deleteStudent, updateStudent } from "./services/studentService";
 
 function App() {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [subjects, setSubjects] = useState<Subject[]>([]);
+  const [students, setStudents] = useState<Student[]>([]);
+
+  useEffect(() => {
+    getAllDisciplines().then(setSubjects);
+  }, []);
+
+  useEffect(() => {
+    getAllStudents().then(setStudents);
+  }, []);
 
   const handleNext = () => {
-    setSelectedIndex((prev) => (prev + 1) % mockStudents.length);
+    setSelectedIndex((prev) => (prev + 1) % students.length);
   };
 
   const handlePrev = () => {
-    setSelectedIndex((prev) => (prev - 1 + mockStudents.length) % mockStudents.length);
+    setSelectedIndex((prev) => (prev - 1 + students.length) % students.length);
+  };
+
+  const handleCreateStudent = async (formData: FormData) => {
+    try {
+      const newStudent = await createStudent(formData);
+      setStudents((prev) => [...prev, newStudent]);
+      setSelectedIndex(students.length);
+    } catch (error) {
+      console.error("Erro ao criar estudante:", error);
+    }
+  };
+
+  const handleUpdateStudent = async (id: number, formData: FormData) => {
+    try {
+      const updated = await updateStudent(id, formData);
+      setStudents((prev) =>
+        prev.map((s) => (s.id === id ? updated : s))
+      );
+    } catch (error) {
+      console.error("Erro ao atualizar estudante:", error);
+    }
+  };
+  
+  const handleDeleteStudent = async (id: number) => {
+    try {
+      await deleteStudent(id);
+      const updatedList = students.filter((s) => s.id !== id);
+      setStudents(updatedList);
+      setSelectedIndex((prev) =>
+        updatedList.length === 0 ? 0 : Math.min(prev, updatedList.length - 1)
+      );
+    } catch (error) {
+      console.error("Erro ao deletar estudante:", error);
+    }
   };
 
   return (
     <Container sx={{ mt: 4 }}>
       <Grid container spacing={4}>
         <Grid item xs={12} md={7}>
-          <SubjectTable subjects={mockSubjects} />
+          <SubjectTable subjects={subjects} />
         </Grid>
         <Grid item xs={12} md={5}>
-          <StudentCard
-            student={mockStudents[selectedIndex]}
+          {students.length === 0 ? (
+            <Typography>Loading student...</Typography>
+          ) : (
+            <StudentCard
+            student={students[selectedIndex]}
             onNext={handleNext}
             onPrev={handlePrev}
+            onCreate={handleCreateStudent}
+            onUpdate={handleUpdateStudent}
+            onDelete={handleDeleteStudent}
           />
+          )}
         </Grid>
       </Grid>
     </Container>
