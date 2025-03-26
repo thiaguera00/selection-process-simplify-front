@@ -2,19 +2,14 @@ import { useEffect, useState } from "react";
 import { Container, Grid, Typography } from "@mui/material";
 import SubjectTable from "./components/TableDisciplines";
 import StudentCard from "./components/StudentCard";
-import { Subject } from "./types/subject";
 import { Student } from "./types/students";
-import { getAllDisciplines } from "./services/disciplineService";
 import { getAllStudents, createStudent, deleteStudent, updateStudent } from "./services/studentService";
 
 function App() {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [subjects, setSubjects] = useState<Subject[]>([]);
+  
   const [students, setStudents] = useState<Student[]>([]);
 
-  useEffect(() => {
-    getAllDisciplines().then(setSubjects);
-  }, []);
 
   useEffect(() => {
     getAllStudents().then(setStudents);
@@ -65,21 +60,35 @@ function App() {
   return (
     <Container sx={{ mt: 4 }}>
       <Grid container spacing={4}>
-        <Grid item xs={12} md={7}>
-          <SubjectTable subjects={subjects} />
-        </Grid>
-        <Grid item xs={12} md={5}>
+        <Grid
+          item
+          xs={12}
+          md={5}
+          order={{ xs: 1, md: 2 }}
+        >
           {students.length === 0 ? (
             <Typography>Loading student...</Typography>
           ) : (
             <StudentCard
-            student={students[selectedIndex]}
-            onNext={handleNext}
-            onPrev={handlePrev}
-            onCreate={handleCreateStudent}
-            onUpdate={handleUpdateStudent}
-            onDelete={handleDeleteStudent}
-          />
+              student={students[selectedIndex]}
+              onNext={handleNext}
+              onPrev={handlePrev}
+              onCreate={handleCreateStudent}
+              onUpdate={handleUpdateStudent}
+              onDelete={handleDeleteStudent}
+            />
+          )}
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          md={7}
+          order={{ xs: 2, md: 1 }}
+        >
+          {students.length === 0 ? (
+            <Typography>Loading student...</Typography>
+          ) : (
+            <SubjectTable disciplines={students[selectedIndex].disciplines} />
           )}
         </Grid>
       </Grid>

@@ -1,3 +1,5 @@
+import { Disciplines } from "./disciplines";
+
 export type StudentStatus = "Active" | "Graduated" | "Inactive" | "On Leave";
 
 export interface Student {
@@ -10,5 +12,5 @@ export interface Student {
   status: StudentStatus;
   progress: number;
   photoUrl: string;
-  disciplines: [string];
+  disciplines: Disciplines[];
 }

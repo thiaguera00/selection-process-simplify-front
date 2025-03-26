@@ -5,7 +5,6 @@ import {
   Avatar,
   IconButton,
   LinearProgress,
-  Dialog,
 } from "@mui/material";
 import { Add, ArrowBackIos, ArrowForwardIos, Person, Edit, Delete } from "@mui/icons-material";
 import { FC, useState } from "react";
@@ -77,7 +76,6 @@ const StudentCard: FC<StudentCardProps> = ({ student, onPrev, onNext, onCreate, 
         width="100%"
         display="flex"
         justifyContent="center"
-        alignItems="center"
         gap={2}
       >
         <IconButton onClick={onPrev}>
@@ -102,7 +100,7 @@ const StudentCard: FC<StudentCardProps> = ({ student, onPrev, onNext, onCreate, 
       <Typography
         variant="h6"
         fontWeight="bold"
-        width="100%"
+        width="90%"
         textAlign="center"
       >
         {student.name}
@@ -167,7 +165,7 @@ const StudentCard: FC<StudentCardProps> = ({ student, onPrev, onNext, onCreate, 
           <Box display="flex" alignItems="center" gap={0.2}>
             <Typography
               fontSize="14px"
-              color="primary"
+              color="#00C7BE"
               fontWeight="bold"
               minWidth="35px"
             >

@@ -10,13 +10,13 @@ import {
   Divider,
 } from "@mui/material";
 import { FC } from "react";
-import { Subject } from "../types/subject";
+import { Disciplines } from "../types/disciplines";
 
 interface SubjectTableProps {
-  subjects: Subject[];
+  disciplines: Disciplines[];
 }
 
-const SubjectTable: FC<SubjectTableProps> = ({ subjects }) => {
+const SubjectTable: FC<SubjectTableProps> = ({ disciplines }) => {
   return (
     <Paper sx={{ borderRadius: 3, p: 3 }}>
       <Typography
@@ -49,12 +49,12 @@ const SubjectTable: FC<SubjectTableProps> = ({ subjects }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {subjects.map((subject, index) => (
+            {disciplines.map((discipline, index) => (
               <TableRow key={index}>
-                <TableCell>{subject.code}</TableCell>
-                <TableCell>{subject.name}</TableCell>
-                <TableCell>{subject.department}</TableCell>
-                <TableCell>{subject.credits}</TableCell>
+                <TableCell>{discipline.code}</TableCell>
+                <TableCell>{discipline.name}</TableCell>
+                <TableCell>{discipline.department}</TableCell>
+                <TableCell>{discipline.credits}</TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -1,4 +1,4 @@
-export interface Subject {
+export interface Disciplines {
     code: string;
     name: string;
     department: string;
