@@ -31,3 +31,13 @@ git clone https://github.com/thiaguera00/selection-process-simplify-front
 cd selection-process-simplify-front
 npm i
 npm run dev
+```
+# Estrutura do projeto
+```bash
+├── components/         # Componentes visuais reutilizáveis
+├── services/           # Serviços para requisições HTTP
+├── types/              # Tipagens TypeScript
+├── App.tsx             # Componente principal
+├── main.tsx            # Ponto de entrada
+├── .env.example        # Exemplo de configuração de ambiente
+└── ...
